@@ -2,15 +2,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Manager {
-    public HashMap<Integer, Task> taskMap = new HashMap<>();
-    public HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
-    public HashMap<Integer, Epic> epicMap = new HashMap<>();
-    public int newId = 1;
+    private HashMap<Integer, Task> taskMap = new HashMap<>();
+    private HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
+    private HashMap<Integer, Epic> epicMap = new HashMap<>();
+    private int newId = 1;
     private final String statusNew = "NEW";
     private final String statusDone = "DONE";
     private final String statusInProgress = "IN_PROGRESS";
 
-    public void saveTaskMap(Task task){
+    public void saveTask(Task task){
         task.setId(newId++);
         taskMap.put(task.getId(), task);
     }
@@ -18,6 +18,7 @@ public class Manager {
     public void saveSubTask(SubTask subTask){
         subTask.setId(newId++);
         subTaskMap.put(subTask.getId(), subTask);
+        syncEpic(getEpicById(subTask.getEpicId()));
     }
 
     public void saveEpic(Epic epic){
@@ -31,19 +32,18 @@ public class Manager {
         int checkDone = 0;
 
         for (int subTask : epic.getSubTasks()) {
-            subTaskMap.get(subTask).setEpicId(epic.getId());
             status = subTaskMap.get(subTask).getStatus();
 
-            if (status.equals(statusNew)){
-                checkNew++;
-            } else if(status.equals(statusDone)){
-                checkDone++;
+                if (status.equals(statusNew)) {
+                    checkNew++;
+                } else if (status.equals(statusDone)) {
+                    checkDone++;
+                }
             }
-        }
 
-        if (epic.getSubTasks().size()== checkNew && checkNew != 0){
+        if (epic.getSubTasks().size() == checkNew || epic.getSubTasks().isEmpty()){
             status = statusNew;
-        } else if (epic.getSubTasks().size() == checkDone && checkDone != 0){
+        } else if (epic.getSubTasks().size() == checkDone){
             status = statusDone;
         } else {
             status = statusInProgress;
@@ -52,16 +52,22 @@ public class Manager {
         epicMap.get(epic.getId()).setStatus(status);
     }
 
-    public HashMap<Integer, Task> getTaskMap() {
-        return taskMap;
+    public ArrayList<Task> getTaskMap() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        tasks.addAll(taskMap.values());
+        return tasks;
     }
 
-    public HashMap<Integer, SubTask> getSubTaskMap() {
-        return subTaskMap;
+    public ArrayList<SubTask> getSubTaskMap() {
+        ArrayList<SubTask> subTasks = new ArrayList<>();
+        subTasks.addAll(subTaskMap.values());
+        return subTasks;
     }
 
-    public HashMap<Integer, Epic> getEpicMap() {
-        return epicMap;
+    public ArrayList<Epic> getEpicMap() {
+        ArrayList<Epic> epics = new ArrayList<>();
+        epics.addAll(epicMap.values());
+        return epics;
     }
 
     public Task getTaskById(int id){
@@ -77,13 +83,11 @@ public class Manager {
     }
 
     public ArrayList<SubTask> getAllSubTaskByEpicId(int epicId){
-        ArrayList<SubTask> subTaskId = new ArrayList<>();
-        for(int subTask : subTaskMap.keySet()){
-            if (subTaskMap.get(subTask).getEpicId() == epicId){
-                subTaskId.add(subTaskMap.get(subTask));
-            }
+        ArrayList<SubTask> subTasks = new ArrayList<>();
+        for(int subTask : epicMap.get(epicId).getSubTasks()){
+                subTasks.add(subTaskMap.get(subTask));
         }
-        return subTaskId;
+        return subTasks;
     }
 
     public void updateTask(Task task){
@@ -97,7 +101,7 @@ public class Manager {
 
     public void updateSubTask(SubTask subTask){
         subTaskMap.put(subTask.getId(), subTask);
-        syncEpic(epicMap.get(subTask.epicId));
+        syncEpic(epicMap.get(subTask.getEpicId()));
     }
 
     public void removeTaskById(int id){
@@ -108,6 +112,7 @@ public class Manager {
         subTaskMap.remove(id);
         for (int epic : epicMap.keySet()) {
             syncEpic(epicMap.get(epic));
+            epicMap.get(epic).getSubTasks().remove(id);
         }
     }
 
@@ -126,10 +131,14 @@ public class Manager {
 
     public void clearAllSubTask(){
         subTaskMap.clear();
+        for(Epic epic : epicMap.values()){
+            epic.getSubTasks().clear();
+        }
     }
 
     public void clearEpic(){
         epicMap.clear();
+        subTaskMap.clear();
     }
 
     public void clearAll(){

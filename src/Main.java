@@ -10,15 +10,19 @@ public class Main {
         Epic epic2 = new Epic("title", "description", "IN_PROGRESS");
         Manager manager = new Manager();
 
-        manager.saveTaskMap(task1);
-        manager.saveTaskMap(task2);
+        manager.saveEpic(epic1);
+        manager.saveEpic(epic2);
+
+        subTask1.setEpicId(epic1.getId());
+        subTask2.setEpicId(epic1.getId());
+        subTask3.setEpicId(epic2.getId());
+
+        manager.saveTask(task1);
+        manager.saveTask(task2);
 
         manager.saveSubTask(subTask1);
         manager.saveSubTask(subTask2);
         manager.saveSubTask(subTask3);
-
-        manager.saveEpic(epic1);
-        manager.saveEpic(epic2);
 
         epic1.addNewTask(subTask1.getId());
         epic1.addNewTask(subTask2.getId());
@@ -38,7 +42,7 @@ public class Main {
         System.out.println("Получение всех сабтасков из эпика - " + manager.getAllSubTaskByEpicId(epic1.getId()));
 
         manager.removeEpicById(epic1.getId());
-        System.out.println("Удаление конеретного эпика - " + manager.epicMap);
+        System.out.println("Удаление конеретного эпика - " + manager.getEpicMap());
 
         manager.removeTaskById(task1.getId());
         System.out.println("Удаление таска - " + manager.getTaskMap());
