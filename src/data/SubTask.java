@@ -1,3 +1,5 @@
+package data;
+
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -31,7 +33,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
+        return "data.SubTask{" +
                 "epicId=" + epicId +
                 ", id=" + id +
                 ", title='" + title + '\'' +
