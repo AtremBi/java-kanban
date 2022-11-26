@@ -25,7 +25,7 @@ public class Manager {
         subTask.setId(newId++);
         subTaskMap.put(subTask.getId(), subTask);
         epicMap.get(subTask.getEpicId()).getSubTasks().add(subTask.getId());
-//        syncEpic(getEpicById(subTask.getEpicId()));
+        syncEpic(getEpicById(subTask.getEpicId()));
     }
 
     public void saveEpic(Epic epic){
