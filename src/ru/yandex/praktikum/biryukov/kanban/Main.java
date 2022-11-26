@@ -1,7 +1,9 @@
-import data.Epic;
-import manager.Manager;
-import data.SubTask;
-import data.Task;
+package ru.yandex.praktikum.biryukov.kanban;
+
+import ru.yandex.praktikum.biryukov.kanban.data.Epic;
+import ru.yandex.praktikum.biryukov.kanban.manager.Manager;
+import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
+import ru.yandex.praktikum.biryukov.kanban.data.Task;
 
 public class Main {
 
@@ -29,28 +31,24 @@ public class Main {
         manager.saveSubTask(subTask2);
         manager.saveSubTask(subTask3);
 
-        epic1.addNewTask(subTask1.getId());
-        epic1.addNewTask(subTask2.getId());
-        epic2.addNewTask(subTask3.getId());
         manager.syncEpic(epic1);
         manager.syncEpic(epic2);
 
-        System.out.println("Все эпики - " + manager.getEpicMap());
-        System.out.println("Все таски - " + manager.getTaskMap());
-        System.out.println("Все сабтаски - " + manager.getSubTaskMap());
+        System.out.println("Все эпики - " + manager.getEpicList());
+        System.out.println("Все таски - " + manager.getTaskList());
+        System.out.println("Все сабтаски - " + manager.getSubTaskList());
 
         subTask1.setStatus("DONE");
         manager.updateSubTask(subTask1);
         manager.syncEpic(epic1);
 
-        System.out.println("Проверили смену статуса - " + manager.getEpicMap());
+        System.out.println("Проверили смену статуса - " + manager.getEpicList());
         System.out.println("Получение всех сабтасков из эпика - " + manager.getAllSubTaskByEpicId(epic1.getId()));
 
         manager.removeEpicById(epic1.getId());
-        System.out.println("Удаление конеретного эпика - " + manager.getEpicMap());
+        System.out.println("Удаление конеретного эпика - " + manager.getEpicList());
 
         manager.removeTaskById(task1.getId());
-        System.out.println("Удаление таска - " + manager.getTaskMap());
-
+        System.out.println("Удаление таска - " + manager.getTaskList());
     }
 }

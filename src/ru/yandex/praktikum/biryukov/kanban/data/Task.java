@@ -1,9 +1,9 @@
-package data;
+package ru.yandex.praktikum.biryukov.kanban.data;
 
 import java.util.Objects;
 
 public class Task {
-    protected int id;
+    protected Integer id;
     protected String title;
     protected String descriptions;
     protected String status;
@@ -62,7 +62,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "data.Task{" +
+        return "ru.yandex.praktikum.biryukov.kanban.data.Task{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", descriptions='" + descriptions + '\'' +

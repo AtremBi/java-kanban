@@ -1,4 +1,4 @@
-package data;
+package ru.yandex.praktikum.biryukov.kanban.data;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -33,7 +33,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "data.Epic{" +
+        return "ru.yandex.praktikum.biryukov.kanban.data.Epic{" +
                 "subTasks=" + subTasks +
                 ", id=" + id +
                 ", title='" + title + '\'' +

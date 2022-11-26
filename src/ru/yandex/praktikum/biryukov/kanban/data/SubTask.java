@@ -1,4 +1,4 @@
-package data;
+package ru.yandex.praktikum.biryukov.kanban.data;
 
 import java.util.Objects;
 
@@ -33,7 +33,7 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "data.SubTask{" +
+        return "ru.yandex.praktikum.biryukov.kanban.data.SubTask{" +
                 "epicId=" + epicId +
                 ", id=" + id +
                 ", title='" + title + '\'' +
