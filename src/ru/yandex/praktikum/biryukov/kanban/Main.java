@@ -1,9 +1,10 @@
 package ru.yandex.praktikum.biryukov.kanban;
 
 import ru.yandex.praktikum.biryukov.kanban.data.Epic;
-import ru.yandex.praktikum.biryukov.kanban.manager.Manager;
 import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
 import ru.yandex.praktikum.biryukov.kanban.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.manager.Managers;
+import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
 
 public class Main {
 
@@ -15,40 +16,49 @@ public class Main {
         SubTask subTask3 = new SubTask("title123", "description123", "NEW");
         Epic epic1 = new Epic("title", "description", "IN_PROGRESS");
         Epic epic2 = new Epic("title", "description", "IN_PROGRESS");
-        Manager manager = new Manager();
+        Managers managers = new Managers();
+        TaskManager taskManager = managers.getDefault();
 
-        manager.saveEpic(epic1);
-        manager.saveEpic(epic2);
+        taskManager.saveEpic(epic1);
+        taskManager.saveEpic(epic2);
 
         subTask1.setEpicId(epic1.getId());
         subTask2.setEpicId(epic1.getId());
         subTask3.setEpicId(epic2.getId());
 
-        manager.saveTask(task1);
-        manager.saveTask(task2);
+        taskManager.saveTask(task1);
+        managers.getDefault().saveTask(task2);
 
-        manager.saveSubTask(subTask1);
-        manager.saveSubTask(subTask2);
-        manager.saveSubTask(subTask3);
+        taskManager.saveSubTask(subTask1);
+        taskManager.saveSubTask(subTask2);
+        taskManager.saveSubTask(subTask3);
 
-        manager.syncEpic(epic1);
-        manager.syncEpic(epic2);
+        taskManager.syncEpic(epic1);
+        taskManager.syncEpic(epic2);
 
-        System.out.println("Все эпики - " + manager.getEpicList());
-        System.out.println("Все таски - " + manager.getTaskList());
-        System.out.println("Все сабтаски - " + manager.getSubTaskList());
+        System.out.println("Все эпики - " + taskManager.getEpicList());
+        System.out.println("Все таски - " + taskManager.getTaskList());
+        System.out.println("Все сабтаски - " + taskManager.getSubTaskList());
 
         subTask1.setStatus("DONE");
-        manager.updateSubTask(subTask1);
-        manager.syncEpic(epic1);
+        taskManager.updateSubTask(subTask1);
+        taskManager.syncEpic(epic1);
 
-        System.out.println("Проверили смену статуса - " + manager.getEpicList());
-        System.out.println("Получение всех сабтасков из эпика - " + manager.getAllSubTaskByEpicId(epic1.getId()));
 
-        manager.removeEpicById(epic1.getId());
-        System.out.println("Удаление конеретного эпика - " + manager.getEpicList());
 
-        manager.removeTaskById(task1.getId());
-        System.out.println("Удаление таска - " + manager.getTaskList());
+        System.out.println("Проверили смену статуса - " + taskManager.getEpicList());
+        System.out.println("Получение всех сабтасков из эпика - " + taskManager.getAllSubTaskByEpicId(epic1.getId()));
+
+        taskManager.removeEpicById(epic1.getId());
+        System.out.println("Удаление конеретного эпика - " + taskManager.getEpicList());
+
+        managers.getDefault().removeTaskById(task1.getId());
+        System.out.println("Удаление таска - " + taskManager.getTaskList());
+
+
+        taskManager.getEpicById(2);
+        taskManager.getSubTaskById(10); // проверка на вызов не сущ таска
+
+        System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
     }
 }
