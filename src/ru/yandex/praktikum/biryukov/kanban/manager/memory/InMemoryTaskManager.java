@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class InMemoryTaskManager implements TaskManager {
-    private HashMap<Integer, Task> taskMap = new HashMap<>();
-    private HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
-    private HashMap<Integer, Epic> epicMap = new HashMap<>();
+    private final HashMap<Integer, Task> taskMap = new HashMap<>();
+    private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
+    private final HashMap<Integer, Epic> epicMap = new HashMap<>();
     private int newId = 1;
-    private final Enum statusNew = TaskStatus.NEW;
-    private final Enum statusDone = TaskStatus.DONE;
-    private final Enum statusInProgress = TaskStatus.IN_PROGRESS;
+    private final Enum<TaskStatus> statusNew = TaskStatus.NEW;
+    private final Enum<TaskStatus> statusDone = TaskStatus.DONE;
+    private final Enum<TaskStatus> statusInProgress = TaskStatus.IN_PROGRESS;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
