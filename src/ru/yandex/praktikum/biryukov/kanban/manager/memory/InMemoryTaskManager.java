@@ -3,6 +3,7 @@ package ru.yandex.praktikum.biryukov.kanban.manager.memory;
 import ru.yandex.praktikum.biryukov.kanban.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
 import ru.yandex.praktikum.biryukov.kanban.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.data.TaskStatus;
 import ru.yandex.praktikum.biryukov.kanban.manager.Managers;
 import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.HistoryManager;
 import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
@@ -15,10 +16,10 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
     private HashMap<Integer, Epic> epicMap = new HashMap<>();
     private int newId = 1;
-    private final String statusNew = String.valueOf(TaskStatus.NEW);
-    private final String statusDone = String.valueOf(TaskStatus.DONE);
-    private final String statusInProgress = String.valueOf(TaskStatus.IN_PROGRESS);
-    private HistoryManager historyManager = Managers.getDefaultHistory();
+    private final Enum statusNew = TaskStatus.NEW;
+    private final Enum statusDone = TaskStatus.DONE;
+    private final Enum statusInProgress = TaskStatus.IN_PROGRESS;
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public void saveTask(Task task){
@@ -42,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void syncEpic(Epic epic){
-        String status;
+        Enum status;
         int checkNew = 0;
         int checkDone = 0;
 
@@ -84,8 +85,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task getTaskById(int id){
-        historyManager.add(taskMap.get(id));
-        return taskMap.get(id);
+        Task task = taskMap.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     @Override

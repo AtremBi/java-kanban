@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private ArrayList<Integer> subTasks = new ArrayList<>();
-    public Epic(String title, String descriptions, String status) {
+    public Epic(String title, String descriptions, Enum status) {
         super( title, descriptions, status);
     }
 

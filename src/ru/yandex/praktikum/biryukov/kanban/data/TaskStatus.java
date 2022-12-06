@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.memory;
+package ru.yandex.praktikum.biryukov.kanban.data;
 
 public enum TaskStatus {
     NEW,

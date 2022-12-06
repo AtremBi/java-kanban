@@ -6,16 +6,18 @@ import ru.yandex.praktikum.biryukov.kanban.data.Task;
 import ru.yandex.praktikum.biryukov.kanban.manager.Managers;
 import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
 
+import static ru.yandex.praktikum.biryukov.kanban.data.TaskStatus.*;
+
 public class Main {
 
     public static void main(String[] args) {
-        Task task1 = new Task("title", "description", "NEW");
-        Task task2 = new Task("title", "description", "NEW");
-        SubTask subTask1 = new SubTask("title", "description", "NEW");
-        SubTask subTask2 = new SubTask("title123", "description123", "DONE");
-        SubTask subTask3 = new SubTask("title123", "description123", "NEW");
-        Epic epic1 = new Epic("title", "description", "IN_PROGRESS");
-        Epic epic2 = new Epic("title", "description", "IN_PROGRESS");
+        Task task1 = new Task("title", "description", NEW);
+        Task task2 = new Task("title", "description", NEW);
+        SubTask subTask1 = new SubTask("title", "description", NEW);
+        SubTask subTask2 = new SubTask("title123", "description123", DONE);
+        SubTask subTask3 = new SubTask("title123", "description123", NEW);
+        Epic epic1 = new Epic("title", "description", IN_PROGRESS);
+        Epic epic2 = new Epic("title", "description", IN_PROGRESS);
         Managers managers = new Managers();
         TaskManager taskManager = managers.getDefault();
 
@@ -40,7 +42,7 @@ public class Main {
         System.out.println("Все таски - " + taskManager.getTaskList());
         System.out.println("Все сабтаски - " + taskManager.getSubTaskList());
 
-        subTask1.setStatus("DONE");
+        subTask1.setStatus(DONE);
         taskManager.updateSubTask(subTask1);
         taskManager.syncEpic(epic1);
 
