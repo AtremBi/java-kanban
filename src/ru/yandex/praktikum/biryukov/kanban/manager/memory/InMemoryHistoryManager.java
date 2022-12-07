@@ -6,19 +6,19 @@ import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.HistoryManager;
 import java.util.ArrayList;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final ArrayList<Task> checkHistoryViewingTasks = new ArrayList<>();
+    private final ArrayList<Task> viewedTasks = new ArrayList<>();
     @Override
     public ArrayList<Task> getHistory() {
-        return checkHistoryViewingTasks;
+        return viewedTasks;
     }
 
     @Override
     public void add(Task task){
-        if (checkHistoryViewingTasks.size() > 10){
-            checkHistoryViewingTasks.remove(0);
+        if (viewedTasks.size() > 10){
+            viewedTasks.remove(0);
         }
         if (task != null){
-            checkHistoryViewingTasks.add(task);
+            viewedTasks.add(task);
         }
     }
 }
