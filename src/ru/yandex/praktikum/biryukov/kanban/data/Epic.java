@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
-    private ArrayList<Integer> subTasks = new ArrayList<>();
-    public Epic(String title, String descriptions, Enum status) {
+    private final ArrayList<Integer> subTasks = new ArrayList<>();
+    public Epic(String title, String descriptions, TaskStatus status) {
         super( title, descriptions, status);
     }
 

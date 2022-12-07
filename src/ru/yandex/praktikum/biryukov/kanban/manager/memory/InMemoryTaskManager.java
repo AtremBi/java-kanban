@@ -16,9 +16,9 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicMap = new HashMap<>();
     private int newId = 1;
-    private final Enum<TaskStatus> statusNew = TaskStatus.NEW;
-    private final Enum<TaskStatus> statusDone = TaskStatus.DONE;
-    private final Enum<TaskStatus> statusInProgress = TaskStatus.IN_PROGRESS;
+    private final TaskStatus statusNew = TaskStatus.NEW;
+    private final TaskStatus statusDone = TaskStatus.DONE;
+    private final TaskStatus statusInProgress = TaskStatus.IN_PROGRESS;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -43,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void syncEpic(Epic epic){
-        Enum status;
+        TaskStatus status;
         int checkNew = 0;
         int checkDone = 0;
 
