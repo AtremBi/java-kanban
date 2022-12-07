@@ -16,9 +16,6 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicMap = new HashMap<>();
     private int newId = 1;
-    private final TaskStatus statusNew = TaskStatus.NEW;
-    private final TaskStatus statusDone = TaskStatus.DONE;
-    private final TaskStatus statusInProgress = TaskStatus.IN_PROGRESS;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -50,19 +47,19 @@ public class InMemoryTaskManager implements TaskManager {
         for (int subTask : epic.getSubTasks()) {
             status = subTaskMap.get(subTask).getStatus();
 
-                if (status.equals(statusNew)) {
+                if (status.equals(TaskStatus.NEW)) {
                     checkNew++;
-                } else if (status.equals(statusDone)) {
+                } else if (status.equals(TaskStatus.DONE)) {
                     checkDone++;
                 }
             }
 
         if (epic.getSubTasks().size() == checkNew || epic.getSubTasks().isEmpty()){
-            status = statusNew;
+            status = TaskStatus.NEW;
         } else if (epic.getSubTasks().size() == checkDone){
-            status = statusDone;
+            status = TaskStatus.DONE;
         } else {
-            status = statusInProgress;
+            status = TaskStatus.IN_PROGRESS;
         }
 
         epicMap.get(epic.getId()).setStatus(status);
