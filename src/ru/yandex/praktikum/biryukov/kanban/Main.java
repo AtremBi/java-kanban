@@ -51,16 +51,23 @@ public class Main {
         System.out.println("Проверили смену статуса - " + taskManager.getEpicList());
         System.out.println("Получение всех сабтасков из эпика - " + taskManager.getAllSubTaskByEpicId(epic1.getId()));
 
-        taskManager.removeEpicById(epic1.getId());
-        System.out.println("Удаление конеретного эпика - " + taskManager.getEpicList());
+//        taskManager.removeEpicById(epic1.getId());
+//        System.out.println("Удаление конеретного эпика - " + taskManager.getEpicList());
 
         managers.getDefault().removeTaskById(task1.getId());
         System.out.println("Удаление таска - " + taskManager.getTaskList());
 
 
+        taskManager.getEpicById(1);
         taskManager.getEpicById(2);
+        taskManager.getEpicById(1);
+        taskManager.getEpicById(1);
+        taskManager.getSubTaskById(6);
+
         taskManager.getSubTaskById(10); // проверка на вызов не сущ таска
 
+        System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
+        taskManager.removeEpicById(epic2.getId());
         System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
     }
 }

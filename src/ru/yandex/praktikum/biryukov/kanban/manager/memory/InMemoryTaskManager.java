@@ -10,6 +10,7 @@ import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> taskMap = new HashMap<>();
@@ -127,6 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeTaskById(int id){
+        historyManager.remove(id);
         taskMap.remove(id);
     }
 
@@ -135,11 +137,13 @@ public class InMemoryTaskManager implements TaskManager {
         for (int epic : epicMap.keySet()) {
             for (int i = 0; i < epicMap.get(epic).getSubTasks().size(); i++) {
                 if (epicMap.get(epic).getSubTasks().get(i).equals(id)){
+                    historyManager.remove(i);
                     epicMap.get(epic).getSubTasks().remove(i);
                 }
             }
             syncEpic(epicMap.get(epic));
         }
+        historyManager.remove(id);
         subTaskMap.remove(id);
     }
 
@@ -149,6 +153,10 @@ public class InMemoryTaskManager implements TaskManager {
             for (int i = 0; i < epicMap.get(epic).getSubTasks().size(); i++) {
                 subTaskMap.remove(epicMap.get(epic).getSubTasks().get(i));
             }
+        }
+        historyManager.remove(id);
+        for (int i = 0; i < epicMap.get(id).getSubTasks().size(); i++){
+            historyManager.remove(epicMap.get(id).getSubTasks().get(i));
         }
         epicMap.remove(id);
     }
@@ -180,7 +188,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public ArrayList<Task> getHistory(){
+    public List<Task> getHistory(){
         return historyManager.getHistory();
     }
 }

@@ -5,6 +5,7 @@ import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
 import ru.yandex.praktikum.biryukov.kanban.data.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
 
@@ -50,5 +51,5 @@ public interface TaskManager {
 
     void clearAll();
 
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 }
