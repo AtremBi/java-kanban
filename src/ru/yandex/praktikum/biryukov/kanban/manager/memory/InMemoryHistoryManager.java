@@ -24,19 +24,18 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(int id) {
         if (viewedTasks.memory.containsKey(id)){
-            viewedTasks.removeNode(viewedTasks.memory.get(id));
+            viewedTasks.removeNode(id);
         }
     }
 
-    public class CustomLinkedList<T extends Task> {
+    private class CustomLinkedList<T extends Task> {
         private final HashMap<Integer, Node<T>> memory = new HashMap<>();
         public Node<T> head;
         public Node<T> tail;
 
         public void linkLast(T e) {
             if (memory.containsKey(e.getId())){
-                removeNode(memory.get(e.getId()));
-                    memory.remove(e.getId());
+                removeNode(e.getId());
             }
             final Node<T> t = tail;
             final Node<T> newNode = new Node<>(t, e, null);
@@ -49,29 +48,32 @@ public class InMemoryHistoryManager implements HistoryManager {
             memory.put(e.getId(), newNode);
         }
 
-        public void removeNode(Node<T> node){
-            final Node<T> next = node.next;
-            final Node<T> prev = node.prev;
+        public void removeNode(int nodeId){
+            final Node<T> next = memory.get(nodeId).next;
+            final Node<T> prev = memory.get(nodeId).prev;
 
             if (prev == null) {
                 head = next;
             } else {
                 prev.next = next;
-                node.prev = null;
+                memory.get(nodeId).prev = null;
             }
 
             if (next == null) {
                 tail = prev;
             } else {
                 next.prev = prev;
-                node.next = null;
+                memory.get(nodeId).next = null;
             }
+            memory.remove(nodeId);
         }
 
         public List<Task> getTasks(){
             List<Task> tasks = new ArrayList<>();
-            for (Node<T> task = head; task != null; task = task.next) {
+            Node<T> task = head;
+            while (task != null) {
                 tasks.add(task.data);
+                task = task.next;
             }
 
             return tasks;
