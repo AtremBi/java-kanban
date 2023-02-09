@@ -20,6 +20,10 @@ public class Main {
         Epic epic2 = new Epic("title", "description", IN_PROGRESS);
         Managers managers = new Managers();
         TaskManager taskManager = managers.getDefault();
+        System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
+        System.out.println(taskManager.getTaskList());
+        System.out.println(taskManager.getSubTaskList());
+        System.out.println("123" + taskManager.getEpicList());
 
         taskManager.saveEpic(epic1);
         taskManager.saveEpic(epic2);
@@ -57,17 +61,18 @@ public class Main {
         managers.getDefault().removeTaskById(task1.getId());
         System.out.println("Удаление таска - " + taskManager.getTaskList());
 
-
+        taskManager.getTaskById(3);
         taskManager.getEpicById(1);
         taskManager.getEpicById(2);
         taskManager.getEpicById(1);
         taskManager.getEpicById(1);
         taskManager.getSubTaskById(6);
 
+
         taskManager.getSubTaskById(10); // проверка на вызов не сущ таска
 
         System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
-        taskManager.removeEpicById(epic2.getId());
-        System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
+    //    taskManager.removeEpicById(epic2.getId());
+//        System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
     }
 }
