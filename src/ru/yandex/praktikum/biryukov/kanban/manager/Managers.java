@@ -11,9 +11,7 @@ public class Managers {
     public TaskManager getDefault(){
         File file = new File("tasks.csv");
         return FileBackedTasksManager.loadFromFile(file);
-//        return new FileBackedTasksManager();
     }
-
 
     public static HistoryManager getDefaultHistory(){
         return new InMemoryHistoryManager();

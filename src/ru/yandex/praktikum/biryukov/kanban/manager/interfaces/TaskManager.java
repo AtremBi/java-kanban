@@ -15,8 +15,6 @@ public interface TaskManager {
 
     void saveEpic(Epic epic);
 
-    void syncEpic(Epic epic);
-
     ArrayList<Task> getTaskList();
 
     ArrayList<SubTask> getSubTaskList();

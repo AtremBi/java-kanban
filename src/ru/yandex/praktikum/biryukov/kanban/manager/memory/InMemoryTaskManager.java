@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final HashMap<Integer, Task> taskMap = new HashMap<>();
     private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicMap = new HashMap<>();
-    private int newId = 1;
+    protected int newId = 1;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     public HistoryManager returnHistoryManager(){
@@ -43,8 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
         epicMap.put(epic.getId(), epic);
     }
 
-    @Override
-    public void syncEpic(Epic epic){
+    private void syncEpic(Epic epic){
         TaskStatus status;
         int checkNew = 0;
         int checkDone = 0;
@@ -88,11 +87,11 @@ public class InMemoryTaskManager implements TaskManager {
         return taskMap;
     }
 
-    public HashMap<Integer, SubTask> getSubTaskMap() {
+    protected HashMap<Integer, SubTask> getSubTaskMap() {
         return subTaskMap;
     }
 
-    public HashMap<Integer, Epic> getEpicMap() {
+    protected HashMap<Integer, Epic> getEpicMap() {
         return epicMap;
     }
 

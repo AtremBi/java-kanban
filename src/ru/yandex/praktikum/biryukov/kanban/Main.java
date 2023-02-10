@@ -39,8 +39,6 @@ public class Main {
         taskManager.saveSubTask(subTask2);
         taskManager.saveSubTask(subTask3);
 
-        taskManager.syncEpic(epic1);
-        taskManager.syncEpic(epic2);
 
         System.out.println("Все эпики - " + taskManager.getEpicList());
         System.out.println("Все таски - " + taskManager.getTaskList());
@@ -48,7 +46,6 @@ public class Main {
 
         subTask1.setStatus(DONE);
         taskManager.updateSubTask(subTask1);
-        taskManager.syncEpic(epic1);
 
 
 

@@ -1,6 +1,6 @@
 package ru.yandex.praktikum.biryukov.kanban.data;
 
-public enum Types {
+public enum TaskType {
     TASK,
     EPIC,
     SUBTASK
