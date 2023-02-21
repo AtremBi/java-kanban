@@ -1,5 +1,9 @@
 package ru.yandex.praktikum.biryukov.kanban.data;
 
+import ru.yandex.praktikum.biryukov.kanban.enums.TaskType;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Task {
@@ -8,11 +12,38 @@ public class Task {
     protected String descriptions;
     protected TaskStatus status;
     private final TaskType type = TaskType.TASK;
+    protected Duration duration = Duration.ofMinutes(0);
+    protected LocalDateTime startTime;
 
     public Task(String title, String descriptions, TaskStatus status) {
         this.title = title;
         this.descriptions = descriptions;
         this.status = status;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setDuration(Duration duration){
+        this.duration = duration;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime(){
+        try {
+            return startTime.plusMinutes(duration.toMinutes());
+        } catch (NullPointerException e){
+            e.getMessage();
+        }
+        return null;
     }
 
     public TaskType getType(){
@@ -72,6 +103,9 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", descriptions='" + descriptions + '\'' +
                 ", status='" + status + '\'' +
+                ", duration='" + duration + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + getEndTime() + '\'' +
                 '}';
     }
 }

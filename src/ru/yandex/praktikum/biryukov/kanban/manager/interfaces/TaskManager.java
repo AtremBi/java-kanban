@@ -6,8 +6,11 @@ import ru.yandex.praktikum.biryukov.kanban.data.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
+
+    TreeSet<Task> getPrioritizedTasks();
 
     void saveTask(Task task);
 

@@ -1,5 +1,7 @@
 package ru.yandex.praktikum.biryukov.kanban.data;
 
+import ru.yandex.praktikum.biryukov.kanban.enums.TaskType;
+
 import java.util.Objects;
 
 public class SubTask extends Task {
@@ -45,6 +47,9 @@ public class SubTask extends Task {
                 ", title='" + title + '\'' +
                 ", descriptions='" + descriptions + '\'' +
                 ", status='" + status + '\'' +
+                ", duration='" + duration + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + getEndTime() + '\'' +
                 '}';
     }
 }

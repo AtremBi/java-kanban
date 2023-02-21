@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.data;
+package ru.yandex.praktikum.biryukov.kanban.enums;
 
 public enum TaskType {
     TASK,

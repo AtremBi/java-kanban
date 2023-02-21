@@ -1,21 +1,25 @@
 package ru.yandex.praktikum.biryukov.kanban.data;
 
+import ru.yandex.praktikum.biryukov.kanban.enums.TaskType;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
     private final ArrayList<Integer> subTasks = new ArrayList<>();
     private final TaskType type = TaskType.EPIC;
+    private LocalDateTime endTime;
     public Epic(String title, String descriptions, TaskStatus status) {
         super( title, descriptions, status);
     }
 
-    public void addNewTask(int subTask){
-        subTasks.add(subTask);
-    }
-
     public ArrayList<Integer> getSubTasks() {
         return subTasks;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     @Override
@@ -45,6 +49,9 @@ public class Epic extends Task {
                 ", title='" + title + '\'' +
                 ", descriptions='" + descriptions + '\'' +
                 ", status='" + status + '\'' +
+                ", duration='" + duration + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
                 '}';
     }
 }

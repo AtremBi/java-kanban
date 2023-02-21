@@ -6,6 +6,9 @@ import ru.yandex.praktikum.biryukov.kanban.data.Task;
 import ru.yandex.praktikum.biryukov.kanban.manager.Managers;
 import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 import static ru.yandex.praktikum.biryukov.kanban.data.TaskStatus.*;
 
 public class Main {
@@ -13,8 +16,16 @@ public class Main {
     public static void main(String[] args) {
         Task task1 = new Task("title", "description", NEW);
         Task task2 = new Task("title", "description", NEW);
+        task2.setStartTime(LocalDateTime.of(2010, 10, 11, 10, 10));
+        task2.setDuration(Duration.ofMinutes(23112));
+        task1.setStartTime(LocalDateTime.of(2010, 12, 12, 10, 10));
+        task1.setDuration(Duration.ofMinutes(23112));
         SubTask subTask1 = new SubTask("title", "description", NEW);
         SubTask subTask2 = new SubTask("title123", "description123", DONE);
+        subTask2.setStartTime(LocalDateTime.of(2010, 12, 10, 10, 10));
+        subTask2.setDuration(Duration.ofMinutes(1230));
+        subTask1.setStartTime(LocalDateTime.of(2010, 10, 10, 10, 10));
+        subTask1.setDuration(Duration.ofMinutes(1230));
         SubTask subTask3 = new SubTask("title123", "description123", NEW);
         Epic epic1 = new Epic("title", "description", IN_PROGRESS);
         Epic epic2 = new Epic("title", "description", IN_PROGRESS);
@@ -33,11 +44,15 @@ public class Main {
         subTask3.setEpicId(epic2.getId());
 
         taskManager.saveTask(task1);
-        managers.getDefault().saveTask(task2);
+        taskManager.saveTask(task2);
 
         taskManager.saveSubTask(subTask1);
+        System.out.println("456"+subTask1);
         taskManager.saveSubTask(subTask2);
+        System.out.println("456"+subTask2);
+        System.out.println(epic1 + "\n");
         taskManager.saveSubTask(subTask3);
+
 
 
         System.out.println("Все эпики - " + taskManager.getEpicList());
@@ -71,5 +86,8 @@ public class Main {
         System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
     //    taskManager.removeEpicById(epic2.getId());
 //        System.out.println("Тест истории просмотра задач" + taskManager.getHistory());
+
+        System.out.println();
+        System.out.println(taskManager.getPrioritizedTasks());
     }
 }

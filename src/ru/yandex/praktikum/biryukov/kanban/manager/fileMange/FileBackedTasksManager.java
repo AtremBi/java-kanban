@@ -1,17 +1,23 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.memory;
+package ru.yandex.praktikum.biryukov.kanban.manager.fileMange;
 
+import ru.yandex.praktikum.biryukov.kanban.enums.ColumnNames;
+import ru.yandex.praktikum.biryukov.kanban.enums.TaskType;
 import ru.yandex.praktikum.biryukov.kanban.data.*;
 import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.HistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.manager.memory.InMemoryTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.manager.memory.ManagerSaveException;
 
 import java.io.*;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
-import static ru.yandex.praktikum.biryukov.kanban.data.TaskType.*;
+import static ru.yandex.praktikum.biryukov.kanban.enums.TaskType.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
 
-    private FileBackedTasksManager(File file){
+    public FileBackedTasksManager(File file){
         this.file = file;
     }
 
@@ -30,7 +36,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             writer.write("\n" + createHistoryString(returnHistoryManager()));
         } catch (IOException e) {
             e.printStackTrace();
-            throw new  ManagerSaveException(e.getMessage());
+            throw new ManagerSaveException(e.getMessage());
         }
     }
 
@@ -109,31 +115,78 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     private String createTask(Task task){
+        if (task.getStartTime() != null){
+            return String.join(", ",
+                    String.valueOf(task.getId()),
+                    String.valueOf(task.getType()),
+                    task.getTitle(),
+                    String.valueOf(task.getStatus()),
+                    task.getDescriptions(),
+                    null,
+                    task.getDuration().toString(),
+                    task.getStartTime().toString(),
+                    task.getEndTime().toString());
+        }
         return String.join(", ",
                 String.valueOf(task.getId()),
                 String.valueOf(task.getType()),
                 task.getTitle(),
                 String.valueOf(task.getStatus()),
-                task.getDescriptions());
+                task.getDescriptions(),
+                null,
+                null,
+                null,
+                null);
     }
 
     private String createTask(SubTask subTask){
+        if (subTask.getStartTime() != null){
+            return String.join(", ",
+                    String.valueOf(subTask.getId()),
+                    String.valueOf(subTask.getType()),
+                    subTask.getTitle(),
+                    String.valueOf(subTask.getStatus()),
+                    subTask.getDescriptions(),
+                    String.valueOf(subTask.getEpicId()),
+                    subTask.getDuration().toString(),
+                    subTask.getStartTime().toString(),
+                    subTask.getEndTime().toString());
+        }
         return String.join(", ",
                 String.valueOf(subTask.getId()),
                 String.valueOf(subTask.getType()),
                 subTask.getTitle(),
                 String.valueOf(subTask.getStatus()),
                 subTask.getDescriptions(),
-                String.valueOf(subTask.getEpicId()));
+                String.valueOf(subTask.getEpicId()),
+                null,
+                null,
+                null);
     }
 
     private String createTask(Epic epic){
+        if (epic.getStartTime() != null){
+            return String.join(", ",
+                    String.valueOf(epic.getId()),
+                    String.valueOf(epic.getType()),
+                    epic.getTitle(),
+                    String.valueOf(epic.getStatus()),
+                    epic.getDescriptions(),
+                    null,
+                    epic.getDuration().toString(),
+                    epic.getStartTime().toString(),
+                    epic.getEndTime().toString());
+        }
         return String.join(", ",
                 String.valueOf(epic.getId()),
                 String.valueOf(epic.getType()),
                 epic.getTitle(),
                 String.valueOf(epic.getStatus()),
-                epic.getDescriptions());
+                epic.getDescriptions(),
+                null,
+                null,
+                null,
+                null);
     }
 
 
@@ -149,6 +202,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String[] line = value.split(", ");
         Task task = new Task(line[2], line[4], TaskStatus.valueOf(line[3]));
         task.setId(Integer.parseInt(line[0]));
+        if (line.length > 6 && !line[6].equals("null")){
+            task.setDuration(Duration.parse(line[6]));
+            task.setStartTime(LocalDateTime.parse(line[7]));
+        }
         return task;
     }
 
@@ -157,6 +214,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         SubTask subTask = new SubTask(line[2], line[4], TaskStatus.valueOf(line[3]));
                 subTask.setId(Integer.parseInt(line[0]));
                 subTask.setEpicId(Integer.parseInt(line[5]));
+                if (line.length > 6 && !line[6].equals("null")){
+                    subTask.setDuration(Duration.parse(line[6]));
+                    subTask.setStartTime(LocalDateTime.parse(line[7]));
+                }
         return subTask;
     }
 
@@ -164,6 +225,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         String[] line = value.split(", ");
         Epic epic = new Epic(line[2], line[4], TaskStatus.valueOf(line[3]));
         epic.setId(Integer.parseInt(line[0]));
+        if (line.length > 6 && !line[6].equals("null")){
+            epic.setDuration(Duration.parse(line[6]));
+            epic.setStartTime(LocalDateTime.parse(line[7]));
+        }
         return epic;
     }
 
