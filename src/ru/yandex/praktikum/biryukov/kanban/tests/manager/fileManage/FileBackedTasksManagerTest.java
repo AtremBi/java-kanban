@@ -1,10 +1,11 @@
-package ru.yandex.praktikum.biryukov.kanban.tests.managers;
+package ru.yandex.praktikum.biryukov.kanban.tests.manager.fileManage;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.fileMange.FileBackedTasksManager;
+import ru.yandex.praktikum.biryukov.kanban.tests.manager.TaskManagerTest;
 
 import java.io.File;
 
@@ -20,7 +21,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     }
 
     @Override
-    FileBackedTasksManager createTaskManager() {
+    protected FileBackedTasksManager createTaskManager() {
         return FileBackedTasksManager.loadFromFile(file);
     }
 

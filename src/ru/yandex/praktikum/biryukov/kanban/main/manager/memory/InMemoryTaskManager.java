@@ -51,21 +51,20 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public void saveEpic(Epic epic){
         epic.setId(newId++);
-        if (checkIntersections(epic)){
-            epicMap.put(epic.getId(), epic);
-        }
+        epicMap.put(epic.getId(), epic);
     }
 
     private boolean checkIntersections(Task task){
         boolean valid = true;
         if(task.getStartTime() != null){
             for (Task task1 : getPrioritizedTasks()) {
-                if(task.getStartTime().isBefore(task1.getEndTime()) ||
-                        task.getEndTime().isAfter(task1.getStartTime()) ||
-                        (task.getStartTime().equals(task1.getStartTime())
-                                && task.getEndTime().equals(task1.getEndTime()))){
-                    valid = false;
-                    System.out.println("Не удалось добавить задачу. Невозможно взять задачу не закрыв предыдущую");
+                if(task1.getStartTime() != null){
+                    if(task.getStartTime().isBefore(task1.getEndTime()) &&
+                            task.getEndTime().isAfter(task1.getStartTime())
+                    ){
+                        valid = false;
+                        System.out.println("Не удалось добавить задачу. Невозможно взять задачу не закрыв предыдущую");
+                    }
                 }
             }
         }
@@ -94,31 +93,26 @@ public class InMemoryTaskManager implements TaskManager{
             status = TaskStatus.IN_PROGRESS;
         }
 
-        for (int subTask : epic.getSubTasks()) {
-            if (epic.getStartTime() == null || subTaskMap.get(subTask).getStartTime().isBefore(epic.getStartTime())){
-                if(subTaskMap.get(subTask).getStartTime() != null){
-                    epic.setStartTime(subTaskMap.get(subTask).getStartTime());
-                }
-            }
-        }
-
-        for (int subTask : epic.getSubTasks()) {
-            if (epic.getEndTime() == null || subTaskMap.get(subTask).getEndTime() != null
-                    && subTaskMap.get(subTask).getEndTime().isAfter(epic.getEndTime())){
-                if(subTaskMap.get(subTask).getEndTime() != null){
-                    epic.setEndTime(subTaskMap.get(subTask).getEndTime());
-                }
-            }
-        }
-
+        LocalDateTime minStartTime = null;
+        LocalDateTime maxEndTime = null;
         Duration duration = Duration.ofMinutes(0);
-        for (int subTask : epic.getSubTasks()) {
-            if(subTaskMap.get(subTask).getDuration() != null){
-                duration = duration.plus(subTaskMap.get(subTask).getDuration());
+
+        for (SubTask subTask : getAllSubTaskByEpicId(epic.getId())) {
+            if (minStartTime == null || subTask.getStartTime().isBefore(Objects.requireNonNull(minStartTime))){
+                    minStartTime = subTask.getStartTime();
+            }
+            if (maxEndTime == null || subTask.getEndTime().isAfter(Objects.requireNonNull(maxEndTime))){
+                maxEndTime = subTask.getEndTime();
             }
         }
-        epicMap.get(epic.getId()).setDuration(duration);
-        epicMap.get(epic.getId()).setStatus(status);
+        if (minStartTime != null){
+            duration = Duration.between(minStartTime, maxEndTime);
+        }
+        getEpicById(epic.getId()).setStatus(status);
+        getEpicById(epic.getId()).setStartTime(minStartTime);
+        getEpicById(epic.getId()).setDuration(duration);
+        getEpicById(epic.getId()).setEndTime(maxEndTime);
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.tests.managers;
+package ru.yandex.praktikum.biryukov.kanban.tests.manager.memory;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
@@ -11,20 +11,20 @@ import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.NEW;
 class InMemoryHistoryManagerTest {
     InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
     @Test
-    public void Add_returnAddedTask(){
+    public void add_returnAddedTask(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("TEST", "description", NEW);
         inMemoryTaskManager.saveTask(task);
         inMemoryHistoryManager.add(task);
 
-        assertTrue(true, String.valueOf(inMemoryHistoryManager.getHistory().contains(task)));
+        assertTrue(inMemoryHistoryManager.getHistory().contains(task));
     }
     @Test
     public void getHistory_IsEmpty_returnEmptyList(){
         assertTrue(inMemoryHistoryManager.getHistory().isEmpty());
     }
     @Test
-    public void Add_deduplicate(){
+    public void add_deduplicate(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("TEST", "description", NEW);
         inMemoryTaskManager.saveTask(task);
