@@ -1,8 +1,8 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.interfaces;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces;
 
-import ru.yandex.praktikum.biryukov.kanban.data.Epic;
-import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
+import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
 
 import java.util.ArrayList;
 import java.util.List;

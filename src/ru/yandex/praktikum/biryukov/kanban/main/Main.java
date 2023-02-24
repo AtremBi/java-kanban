@@ -1,15 +1,15 @@
-package ru.yandex.praktikum.biryukov.kanban;
+package ru.yandex.praktikum.biryukov.kanban.main;
 
-import ru.yandex.praktikum.biryukov.kanban.data.Epic;
-import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.manager.Managers;
-import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
+import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.Managers;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import static ru.yandex.praktikum.biryukov.kanban.data.TaskStatus.*;
+import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.*;
 
 public class Main {
 

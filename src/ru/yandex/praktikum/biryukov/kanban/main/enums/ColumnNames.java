@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.enums;
+package ru.yandex.praktikum.biryukov.kanban.main.enums;
 
 public enum ColumnNames {
     id,

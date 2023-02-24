@@ -1,17 +1,17 @@
-package ru.yandex.praktikum.biryukov.kanban.Tests;
+package ru.yandex.praktikum.biryukov.kanban.tests;
 
 import org.junit.jupiter.api.Test;
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.manager.memory.InMemoryHistoryManager;
-import ru.yandex.praktikum.biryukov.kanban.manager.memory.InMemoryTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.InMemoryHistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.InMemoryTaskManager;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.yandex.praktikum.biryukov.kanban.data.TaskStatus.NEW;
+import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.NEW;
 
 class InMemoryHistoryManagerTest {
     InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
     @Test
-    public void testAdd(){
+    public void Add_returnAddedTask(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("TEST", "description", NEW);
         inMemoryTaskManager.saveTask(task);
@@ -20,11 +20,11 @@ class InMemoryHistoryManagerTest {
         assertTrue(true, String.valueOf(inMemoryHistoryManager.getHistory().contains(task)));
     }
     @Test
-    public void testAddIsEmpty(){
-        assertTrue(true, String.valueOf(inMemoryHistoryManager.getHistory().isEmpty()));
+    public void getHistory_IsEmpty_returnEmptyList(){
+        assertTrue(inMemoryHistoryManager.getHistory().isEmpty());
     }
     @Test
-    public void testDuplicateAdd(){
+    public void Add_deduplicate(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task = new Task("TEST", "description", NEW);
         inMemoryTaskManager.saveTask(task);
@@ -34,7 +34,7 @@ class InMemoryHistoryManagerTest {
         assertEquals(1, inMemoryHistoryManager.getHistory().size());
     }
     @Test
-    public void removeEnd(){
+    public void remove_deletingTaskInEndList_returnTaskListWithoutDeletedTask(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task1 = new Task("TEST", "description", NEW);
         Task task2 = new Task("TEST", "description", NEW);
@@ -53,7 +53,7 @@ class InMemoryHistoryManagerTest {
         assertTrue(inMemoryHistoryManager.getHistory().contains(task2));
     }
     @Test
-    public void removeMiddle(){
+    public void remove_deletingTaskInMiddleList_returnTaskListWithoutDeletedTask(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task1 = new Task("TEST", "description", NEW);
         Task task2 = new Task("TEST", "description", NEW);
@@ -73,7 +73,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void removeBegin(){
+    public void remove_deletingTaskInBeginList_returnTaskListWithoutDeletedTask(){
         InMemoryTaskManager inMemoryTaskManager = new InMemoryTaskManager();
         Task task1 = new Task("TEST", "description", NEW);
         Task task2 = new Task("TEST", "description", NEW);

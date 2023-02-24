@@ -1,7 +1,7 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.memory;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.memory;
 
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.HistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.HistoryManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;

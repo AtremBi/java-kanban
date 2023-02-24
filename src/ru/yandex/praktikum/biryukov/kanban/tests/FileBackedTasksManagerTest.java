@@ -1,21 +1,21 @@
-package ru.yandex.praktikum.biryukov.kanban.Tests;
+package ru.yandex.praktikum.biryukov.kanban.tests;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import ru.yandex.praktikum.biryukov.kanban.data.Epic;
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.manager.fileMange.FileBackedTasksManager;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.fileMange.FileBackedTasksManager;
 
 import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.yandex.praktikum.biryukov.kanban.data.TaskStatus.NEW;
+import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.NEW;
 
 class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager> {
     File file = new File("tasks.csv");
 
     @AfterEach
-    public void deleteFile() {
+    public void tearDown() {
         file.delete();
     }
 
@@ -25,7 +25,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     }
 
     @Test
-    public void testingFile() {
+    public void loadFromFile_returnNotEmptyFile() {
         Task task = new Task("TEST", "description", NEW);
         taskManager.saveTask(task);
 
@@ -34,7 +34,7 @@ class FileBackedTasksManagerTest extends TaskManagerTest<FileBackedTasksManager>
     }
 
     @Test
-    public void testingFileEpicWithoutSubtasks() {
+    public void loadFromFile_EpicWithoutSubtasks_notReturnError() {
         Epic epic = new Epic("TEST", "description", NEW);
         taskManager.saveEpic(epic);
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(file);

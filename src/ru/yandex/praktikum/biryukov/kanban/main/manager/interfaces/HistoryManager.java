@@ -1,6 +1,6 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.interfaces;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces;
 
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
 
 import java.util.List;
 

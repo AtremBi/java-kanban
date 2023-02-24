@@ -1,18 +1,18 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.fileMange;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.fileMange;
 
-import ru.yandex.praktikum.biryukov.kanban.enums.ColumnNames;
-import ru.yandex.praktikum.biryukov.kanban.enums.TaskType;
-import ru.yandex.praktikum.biryukov.kanban.data.*;
-import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.HistoryManager;
-import ru.yandex.praktikum.biryukov.kanban.manager.memory.InMemoryTaskManager;
-import ru.yandex.praktikum.biryukov.kanban.manager.memory.ManagerSaveException;
+import ru.yandex.praktikum.biryukov.kanban.main.enums.ColumnNames;
+import ru.yandex.praktikum.biryukov.kanban.main.enums.TaskType;
+import ru.yandex.praktikum.biryukov.kanban.main.data.*;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.HistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.InMemoryTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.ManagerSaveException;
 
 import java.io.*;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static ru.yandex.praktikum.biryukov.kanban.enums.TaskType.*;
+import static ru.yandex.praktikum.biryukov.kanban.main.enums.TaskType.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
     private final File file;
@@ -33,7 +33,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             for (Epic epic : getEpicList()) {
                 writer.write(createTask(epic) + "\n");
             }
-            writer.write("\n" + createHistoryString(returnHistoryManager()));
+            for (int i = 1; i < getHistory().size(); i++){
+                writer.write("\n" + createHistoryString(historyManager));
+            }
         } catch (IOException e) {
             e.printStackTrace();
             throw new ManagerSaveException(e.getMessage());
@@ -61,9 +63,9 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                     fileBackedTasksManager.saveTasksFromString(line);
                 } else if (!line.contains("type")){
                     for (Integer id : FileBackedTasksManager.historyFromString(line)) {
-                    fileBackedTasksManager.returnHistoryManager().add(fileBackedTasksManager.getTaskMap().get(id));
-                    fileBackedTasksManager.returnHistoryManager().add(fileBackedTasksManager.getSubTaskMap().get(id));
-                    fileBackedTasksManager.returnHistoryManager().add(fileBackedTasksManager.getEpicMap().get(id));
+                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getTaskMap().get(id));
+                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getSubTaskMap().get(id));
+                        fileBackedTasksManager.historyManager.add(fileBackedTasksManager.getEpicMap().get(id));
                     }
                 }
                 if(!line.contains("id") && !line.isEmpty()){

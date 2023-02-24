@@ -1,14 +1,15 @@
-package ru.yandex.praktikum.biryukov.kanban.manager.memory;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.memory;
 
-import ru.yandex.praktikum.biryukov.kanban.data.Epic;
-import ru.yandex.praktikum.biryukov.kanban.data.SubTask;
-import ru.yandex.praktikum.biryukov.kanban.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.data.TaskStatus;
-import ru.yandex.praktikum.biryukov.kanban.manager.Managers;
-import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.HistoryManager;
-import ru.yandex.praktikum.biryukov.kanban.manager.interfaces.TaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
+import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
+import ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.Managers;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.HistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager{
@@ -16,7 +17,7 @@ public class InMemoryTaskManager implements TaskManager{
     private final HashMap<Integer, SubTask> subTaskMap = new HashMap<>();
     private final HashMap<Integer, Epic> epicMap = new HashMap<>();
     protected int newId = 1;
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    protected final HistoryManager historyManager = Managers.getDefaultHistory();
     private final TreeSet<Task> sortedList = new TreeSet<>((Comparator.nullsLast((task1, task2) -> {
         if (task1.getStartTime() != null && task2.getStartTime() != null){
             return task1.getStartTime().compareTo(task2.getStartTime());
@@ -29,48 +30,46 @@ public class InMemoryTaskManager implements TaskManager{
         }
     })));
 
-    public HistoryManager returnHistoryManager(){
-        return historyManager;
-    }
-
     @Override
     public void saveTask(Task task){
         task.setId(newId++);
-        checkIntersections(task);
-        taskMap.put(task.getId(), task);
+        if (checkIntersections(task)){
+            taskMap.put(task.getId(), task);
+        }
     }
 
     @Override
     public void saveSubTask(SubTask subTask){
-        checkIntersections(subTask);
         subTask.setId(newId++);
-        subTaskMap.put(subTask.getId(), subTask);
-        epicMap.get(subTask.getEpicId()).getSubTasks().add(subTask.getId());
-        syncEpic(epicMap.get(subTask.getEpicId()));
+        if (checkIntersections(subTask)){
+            subTaskMap.put(subTask.getId(), subTask);
+            epicMap.get(subTask.getEpicId()).getSubTasks().add(subTask.getId());
+            syncEpic(epicMap.get(subTask.getEpicId()));
+        }
     }
 
     @Override
     public void saveEpic(Epic epic){
-        checkIntersections(epic);
         epic.setId(newId++);
-        epicMap.put(epic.getId(), epic);
+        if (checkIntersections(epic)){
+            epicMap.put(epic.getId(), epic);
+        }
     }
 
-    private void checkIntersections(Task task){
+    private boolean checkIntersections(Task task){
+        boolean valid = true;
         if(task.getStartTime() != null){
-            try{
-                for (Task task1 : getPrioritizedTasks()) {
-                    if(task.getStartTime().isBefore(task1.getEndTime())){
-                        sortedList.remove(task);
-                        throw new ManagerSaveException(
-                                "Не удалось добавить задачу. Невозможно взять задачу не закрыв предыдущую"
-                        );
-                    }
+            for (Task task1 : getPrioritizedTasks()) {
+                if(task.getStartTime().isBefore(task1.getEndTime()) ||
+                        task.getEndTime().isAfter(task1.getStartTime()) ||
+                        (task.getStartTime().equals(task1.getStartTime())
+                                && task.getEndTime().equals(task1.getEndTime()))){
+                    valid = false;
+                    System.out.println("Не удалось добавить задачу. Невозможно взять задачу не закрыв предыдущую");
                 }
-            } catch (RuntimeException e){
-                System.out.println(e.getMessage());
             }
         }
+        return valid;
     }
 
     private void syncEpic(Epic epic){
@@ -96,8 +95,7 @@ public class InMemoryTaskManager implements TaskManager{
         }
 
         for (int subTask : epic.getSubTasks()) {
-            if (epic.getStartTime() == null || subTaskMap.get(subTask).getStartTime() != null
-                    && subTaskMap.get(subTask).getStartTime().isBefore(epic.getStartTime())){
+            if (epic.getStartTime() == null || subTaskMap.get(subTask).getStartTime().isBefore(epic.getStartTime())){
                 if(subTaskMap.get(subTask).getStartTime() != null){
                     epic.setStartTime(subTaskMap.get(subTask).getStartTime());
                 }
@@ -145,6 +143,7 @@ public class InMemoryTaskManager implements TaskManager{
     public ArrayList<Epic> getEpicList() {
         return new ArrayList<>(epicMap.values());
     }
+
     public HashMap<Integer, Task> getTaskMap() {
         return taskMap;
     }

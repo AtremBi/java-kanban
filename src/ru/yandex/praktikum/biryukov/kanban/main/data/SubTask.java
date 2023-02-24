@@ -1,6 +1,6 @@
-package ru.yandex.praktikum.biryukov.kanban.data;
+package ru.yandex.praktikum.biryukov.kanban.main.data;
 
-import ru.yandex.praktikum.biryukov.kanban.enums.TaskType;
+import ru.yandex.praktikum.biryukov.kanban.main.enums.TaskType;
 
 import java.util.Objects;
 
