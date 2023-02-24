@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.tests;
+package ru.yandex.praktikum.biryukov.kanban.tests.managers;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
