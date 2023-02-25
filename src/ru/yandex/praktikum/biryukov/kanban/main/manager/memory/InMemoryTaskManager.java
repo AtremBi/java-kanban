@@ -60,10 +60,7 @@ public class InMemoryTaskManager implements TaskManager{
             for (Task task1 : getPrioritizedTasks()) {
                 if(task1.getStartTime() != null){
                     if(task.getStartTime().isBefore(task1.getEndTime()) &&
-                            task.getEndTime().isAfter(task1.getStartTime())
-                            //Не понял про форматирование. По ТЗ мы дату никак не форматируем
-                            //не нашел тебя в пачке поэтому тут отписал
-                    ){
+                            task.getEndTime().isAfter(task1.getStartTime())){
                         valid = false;
                         System.out.println("Не пройдена валидация. " +
                                 "Время выполнения задачи не должно пересекаться с уже созданной");

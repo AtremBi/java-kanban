@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.main.test.manager;
+package ru.yandex.praktikum.biryukov.kanban.main;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         SubTask subTask2 = new SubTask("title123", "description123", DONE);
         subTask1.setStartTime(LocalDateTime.of(2010, 10, 10, 10, 10));
         subTask1.setDuration(Duration.ofMinutes(9999));
-        System.out.println(subTask1.getStartTime());
-        System.out.println(subTask1.getEndTime());
 
         subTask2.setStartTime(LocalDateTime.of(2010, 10, 10, 10, 10));
         subTask2.setDuration(Duration.ofMinutes(9999));
-        System.out.println(subTask2.getStartTime());
-        System.out.println(subTask2.getEndTime());
 
         subTask1.setEpicId(epic.getId());
         subTask2.setEpicId(epic.getId());
@@ -59,13 +55,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         SubTask subTask2 = new SubTask("title123", "description123", DONE);
         subTask1.setStartTime(LocalDateTime.of(2010, 10, 10, 10, 10));
         subTask1.setDuration(Duration.ofMinutes(9999));
-        System.out.println(subTask1.getStartTime());
-        System.out.println(subTask1.getEndTime());
 
         subTask2.setStartTime(LocalDateTime.of(2010, 10, 11, 10, 10));
         subTask2.setDuration(Duration.ofMinutes(999));
-        System.out.println(subTask2.getStartTime());
-        System.out.println(subTask2.getEndTime());
 
         subTask1.setEpicId(epic.getId());
         subTask2.setEpicId(epic.getId());
@@ -85,13 +77,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         SubTask subTask2 = new SubTask("title123", "description123", DONE);
         subTask1.setStartTime(LocalDateTime.of(2010, 10, 10, 10, 10));
         subTask1.setDuration(Duration.ofMinutes(9999));
-        System.out.println(subTask1.getStartTime());
-        System.out.println(subTask1.getEndTime());
 
         subTask2.setStartTime(LocalDateTime.of(2010, 10, 17, 10, 10));
         subTask2.setDuration(Duration.ofMinutes(999));
-        System.out.println(subTask2.getStartTime());
-        System.out.println(subTask2.getEndTime());
 
         subTask1.setEpicId(epic.getId());
         subTask2.setEpicId(epic.getId());
@@ -100,7 +88,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         taskManager.updateEpic(epic);
 
-        System.out.println(epic.getStartTime() + " " + epic.getEndTime());
         assertTrue(epic.getSubTasks().contains(subTask2.getId()));
     }
 
@@ -112,13 +99,9 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         SubTask subTask2 = new SubTask("title123", "description123", DONE);
         subTask1.setStartTime(LocalDateTime.of(2010, 10, 10, 10, 10));
         subTask1.setDuration(Duration.ofMinutes(9999));
-        System.out.println(subTask1.getStartTime());
-        System.out.println(subTask1.getEndTime());
 
         subTask2.setStartTime(LocalDateTime.of(2010, 10, 9, 12,59));
         subTask2.setDuration(Duration.ofMinutes(999));
-        System.out.println(subTask2.getStartTime());
-        System.out.println(subTask2.getEndTime());
 
         subTask1.setEpicId(epic.getId());
         subTask2.setEpicId(epic.getId());
@@ -228,8 +211,6 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         SubTask subTask2 = new SubTask("title", "description", NEW);
         subTask2.setEpicId(epic.getId());
         taskManager.saveSubTask(subTask2);
-
-        System.out.println(taskManager.getAllSubTaskByEpicId(epic.getId()));
 
         assertTrue(taskManager.getAllSubTaskByEpicId(epic.getId()).contains(subTask1));
         assertTrue(taskManager.getAllSubTaskByEpicId(epic.getId()).contains(subTask2));
