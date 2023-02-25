@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.tests.manager.memory;
+package ru.yandex.praktikum.biryukov.kanban.main.test.manager.memory;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;

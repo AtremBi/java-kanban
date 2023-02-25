@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.tests.manager;
+package ru.yandex.praktikum.biryukov.kanban.main.test.manager;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -100,6 +100,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
         taskManager.updateEpic(epic);
 
+        System.out.println(epic.getStartTime() + " " + epic.getEndTime());
         assertTrue(epic.getSubTasks().contains(subTask2.getId()));
     }
 

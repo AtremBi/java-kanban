@@ -61,9 +61,12 @@ public class InMemoryTaskManager implements TaskManager{
                 if(task1.getStartTime() != null){
                     if(task.getStartTime().isBefore(task1.getEndTime()) &&
                             task.getEndTime().isAfter(task1.getStartTime())
+                            //Не понял про форматирование. По ТЗ мы дату никак не форматируем
+                            //не нашел тебя в пачке поэтому тут отписал
                     ){
                         valid = false;
-                        System.out.println("Не удалось добавить задачу. Невозможно взять задачу не закрыв предыдущую");
+                        System.out.println("Не пройдена валидация. " +
+                                "Время выполнения задачи не должно пересекаться с уже созданной");
                     }
                 }
             }
@@ -104,10 +107,9 @@ public class InMemoryTaskManager implements TaskManager{
             if (maxEndTime == null || subTask.getEndTime().isAfter(Objects.requireNonNull(maxEndTime))){
                 maxEndTime = subTask.getEndTime();
             }
+            duration = duration.plusMinutes(subTask.getDuration().toMinutes());
         }
-        if (minStartTime != null){
-            duration = Duration.between(minStartTime, maxEndTime);
-        }
+
         getEpicById(epic.getId()).setStatus(status);
         getEpicById(epic.getId()).setStartTime(minStartTime);
         getEpicById(epic.getId()).setDuration(duration);
