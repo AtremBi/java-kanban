@@ -8,6 +8,7 @@ import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
 import ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
@@ -18,10 +19,10 @@ import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.NEW;
 public abstract class TaskManagerTest<T extends TaskManager> {
     public T taskManager;
 
-    protected abstract T createTaskManager();
+    protected abstract T createTaskManager() throws IOException;
 
     @BeforeEach
-     void updateTakManager() {
+     void updateTaskManager() throws IOException {
         taskManager = createTaskManager();
     }
 

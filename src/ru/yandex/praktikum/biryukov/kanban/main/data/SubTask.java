@@ -6,10 +6,10 @@ import java.util.Objects;
 
 public class SubTask extends Task {
     private int epicId;
-    private final TaskType type = TaskType.SUBTASK;
 
     public SubTask(String title, String descriptions, TaskStatus status) {
         super(title, descriptions, status);
+        super.type = TaskType.SUBTASK;
     }
 
     public int getEpicId() {
@@ -20,10 +20,6 @@ public class SubTask extends Task {
         this.epicId = epicId;
     }
 
-    @Override
-    public TaskType getType() {
-        return type;
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.main.manager.fileMange;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage;
 
 import ru.yandex.praktikum.biryukov.kanban.main.enums.ColumnNames;
 import ru.yandex.praktikum.biryukov.kanban.main.enums.TaskType;
@@ -15,13 +15,15 @@ import java.util.*;
 import static ru.yandex.praktikum.biryukov.kanban.main.enums.TaskType.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    private final File file;
+    private File file;
 
     public FileBackedTasksManager(File file){
         this.file = file;
     }
+    public FileBackedTasksManager(){
+    }
 
-    private void save(){
+    protected void save(){
         addHeader();
         try (Writer writer = new FileWriter(file, true)){
             for (Task task : getTaskList()) {

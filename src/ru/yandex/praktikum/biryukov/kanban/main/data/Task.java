@@ -11,7 +11,7 @@ public class Task {
     protected String title;
     protected String descriptions;
     protected TaskStatus status;
-    private final TaskType type = TaskType.TASK;
+    protected TaskType type = TaskType.TASK;
     protected Duration duration = Duration.ofMinutes(0);
     protected LocalDateTime startTime;
 

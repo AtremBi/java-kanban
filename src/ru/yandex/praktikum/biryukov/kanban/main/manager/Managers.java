@@ -1,16 +1,15 @@
 package ru.yandex.praktikum.biryukov.kanban.main.manager;
 
+import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.HttpTaskManager;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.HistoryManager;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.fileMange.FileBackedTasksManager;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.InMemoryHistoryManager;
 
-import java.io.File;
+import java.net.URI;
 
 public class Managers {
     public TaskManager getDefault(){
-        File file = new File("tasks.csv");
-        return FileBackedTasksManager.loadFromFile(file);
+        return new HttpTaskManager(URI.create("http://localhost:8078"));
     }
 
     public static HistoryManager getDefaultHistory(){
