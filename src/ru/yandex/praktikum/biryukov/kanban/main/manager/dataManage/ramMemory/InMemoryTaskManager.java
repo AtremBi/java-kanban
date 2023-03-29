@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.main.manager.memory;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory;
 
 import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;

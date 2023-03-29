@@ -1,11 +1,11 @@
-package ru.yandex.praktikum.biryukov.kanban.main.dataManage;
+package ru.yandex.praktikum.biryukov.kanban.main.dataManage.file;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.TaskManagerTest;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.FileBackedTasksManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.file.FileBackedTasksManager;
 
 import java.io.File;
 

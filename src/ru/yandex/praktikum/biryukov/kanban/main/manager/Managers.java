@@ -1,9 +1,9 @@
 package ru.yandex.praktikum.biryukov.kanban.main.manager;
 
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.HttpTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.server.HttpTaskManager;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.HistoryManager;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.InMemoryHistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory.InMemoryHistoryManager;
 
 import java.net.URI;
 

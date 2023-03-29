@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.main.server;
+package ru.yandex.praktikum.biryukov.kanban.main.KVclient;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,12 +14,16 @@ public class KVTaskClient {
     public KVTaskClient (URI url) {
         this.uri = url;
         client = HttpClient.newHttpClient();
-        url = URI.create(url.toString() + "/register");
+        register();
+    }
+
+    private void register(){
+        URI url = URI.create(uri.toString() + "/register");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
                 .GET()
                 .version(HttpClient.Version.HTTP_1_1)
-                .header("Accept", "text/html")
+                .header("Content-type", "application/json")
                 .build();
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -39,7 +43,7 @@ public class KVTaskClient {
         URI url = URI.create(uri.toString() + "/save/" + key + "?API_TOKEN=" + token);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
-                .header("Accept", "text/html")
+                .header("Content-type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
         try {
@@ -58,7 +62,7 @@ public class KVTaskClient {
         URI url = URI.create(uri.toString() + "/load/" + key + "?API_TOKEN=" + token);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(url)
-                .header("Accept", "text/html")
+                .header("Content-type", "application/json")
                 .GET()
                 .build();
         try {

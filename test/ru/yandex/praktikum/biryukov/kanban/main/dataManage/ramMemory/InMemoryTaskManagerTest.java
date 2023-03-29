@@ -1,6 +1,6 @@
-package ru.yandex.praktikum.biryukov.kanban.main.memory;
+package ru.yandex.praktikum.biryukov.kanban.main.dataManage.ramMemory;
 
-import ru.yandex.praktikum.biryukov.kanban.main.manager.memory.InMemoryTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory.InMemoryTaskManager;
 import ru.yandex.praktikum.biryukov.kanban.main.TaskManagerTest;
 
 class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager> {

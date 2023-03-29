@@ -1,10 +1,10 @@
-package ru.yandex.praktikum.biryukov.kanban.main.dataManage;
+package ru.yandex.praktikum.biryukov.kanban.main.dataManage.server;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.TaskManagerTest;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.HttpTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.server.HttpTaskManager;
 import ru.yandex.praktikum.biryukov.kanban.main.server.KVServer;
 
 import java.io.IOException;

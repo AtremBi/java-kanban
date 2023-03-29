@@ -53,6 +53,7 @@ public class KVServer {
 					} else {
 						String value = data.get(key);
 						System.out.println("Значение для ключа " + key + " успешно возвращено!");
+						h.getResponseHeaders().set("Content-type", "application/json");
 						h.sendResponseHeaders(200, 0);
 						try (OutputStream outputStream = h.getResponseBody()) {
 							outputStream.write(value.getBytes(UTF_8));
@@ -81,6 +82,7 @@ public class KVServer {
 				System.out.println(key);
 				if (key.isEmpty()) {
 					System.out.println("Key для сохранения пустой. key указывается в пути: /save/{key}");
+					h.getResponseHeaders().set("Content-type", "application/json");
 					h.sendResponseHeaders(400, 0);
 					return;
 				}
@@ -110,6 +112,7 @@ public class KVServer {
 				sendText(h, apiToken);
 			} else {
 				System.out.println("/register ждёт GET-запрос, а получил " + h.getRequestMethod());
+				h.getResponseHeaders().set("Content-type", "application/json");
 				h.sendResponseHeaders(405, 0);
 			}
 		} finally {
