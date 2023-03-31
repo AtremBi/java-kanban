@@ -11,9 +11,6 @@ import ru.yandex.praktikum.biryukov.kanban.main.server.KVServer;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.NEW;
