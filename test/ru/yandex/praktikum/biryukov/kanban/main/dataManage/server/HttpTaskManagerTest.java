@@ -3,6 +3,8 @@ package ru.yandex.praktikum.biryukov.kanban.main.dataManage.server;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.TaskManagerTest;
+import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
+import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.server.HttpTaskManager;
 import ru.yandex.praktikum.biryukov.kanban.main.server.KVServer;
@@ -34,52 +36,19 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
     @Test
     public void loadFromServer() {
         Task task = new Task("title", "description", NEW);
+        SubTask subTask = new SubTask("title", "description", NEW);
+        Epic epic = new Epic("title", "description", NEW);
+        taskManager.saveEpic(epic);
+        subTask.setEpicId(epic.getId());
         taskManager.saveTask(task);
-        String token = null;
-        String body = null;
+        taskManager.saveSubTask(subTask);
+        taskManager.getTaskById(task.getId());
 
-        URI uri = URI.create("http://localhost:8078");
-        HttpClient client1 = HttpClient.newHttpClient();
-        URI urlReg = URI.create(uri + "/register");
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(urlReg)
-                .GET()
-                .version(HttpClient.Version.HTTP_1_1)
-                .header("Accept", "text/html")
-                .build();
-        try {
-            HttpResponse<String> response = client1.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200) {
-                token = response.body();
-            } else {
-                System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
-            }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
-                    "Проверьте, пожалуйста, адрес и повторите попытку.");
-        }
+        HttpTaskManager manager = new HttpTaskManager(URI.create("http://localhost:8078"));
 
-        HttpClient client2  = HttpClient.newHttpClient();
-        URI urlPut = URI.create(uri + "/load/" + "task" + "?API_TOKEN=" + token);
-        HttpRequest request1 = HttpRequest.newBuilder()
-                .uri(urlPut)
-                .header("Accept", "text/html")
-                .GET()
-                .build();
-        try {
-            HttpResponse<String> response = client2.send(request1, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() == 200){
-                body = response.body();
-            }
-            else {
-                System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
-            }
-        } catch (IOException | InterruptedException e) {
-            System.out.println("Во время выполнения запроса возникла ошибка.\n" +
-                    "Проверьте, пожалуйста, адрес и повторите попытку.");
-
-        }
-
-        assertTrue(body.contains(task.getTitle()));
+        assertEquals(manager.getTaskById(task.getId()), task);
+        assertEquals(manager.getSubTaskById(subTask.getId()), subTask);
+        assertEquals(manager.getEpicById(epic.getId()), epic);
+        assertTrue(manager.getHistory().contains(task));
     }
 }

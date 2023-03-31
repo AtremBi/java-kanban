@@ -1,7 +1,6 @@
 package ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.server;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
@@ -9,12 +8,13 @@ import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.file.FileBack
 import ru.yandex.praktikum.biryukov.kanban.main.KVclient.KVTaskClient;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 public class HttpTaskManager extends FileBackedTasksManager {
     private final KVTaskClient kvTaskClient;
-    private final Gson gson = new Gson();
+    private final Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .serializeNulls()
+            .create();
 
     public HttpTaskManager(URI kvUrl){
         super();
@@ -34,36 +34,27 @@ public class HttpTaskManager extends FileBackedTasksManager {
         kvTaskClient.put("history", gson.toJson(getHistory()));
     }
 
+    private JsonObject jsonParse(String key) throws JsonSyntaxException{
+        JsonElement jsonTask = JsonParser.parseString(kvTaskClient.load(key));
+        JsonArray tasksList = jsonTask.getAsJsonArray();
+        JsonObject jsonObject = null;
+        if (!tasksList.isEmpty()){
+            for (JsonElement json : tasksList) {
+                jsonObject = json.getAsJsonObject();
+            }
+        }
+        return jsonObject;
+    }
+
     private void loadFromServer(){
-        ArrayList<Task> tasksList = new ArrayList((List.of(kvTaskClient.load("task"))));
         try {
-            if (!tasksList.isEmpty()){
-                List<Task> tasks = List.of(gson.fromJson(kvTaskClient.load("task"), Task.class));
-                for (Task task : tasks) {
-                    getTaskMap().put(task.getId(), task);
-                }
-            }
-            ArrayList<SubTask> subTasksList = new ArrayList(List.of(kvTaskClient.load("subtask")));
-            if (!subTasksList.isEmpty()){
-                List<SubTask> subTasks = List.of(gson.fromJson(kvTaskClient.load("subtask"), SubTask.class));
-                for (SubTask subTask : subTasks) {
-                    getSubTaskMap().put(subTask.getId(), subTask);
-                }
-            }
-            ArrayList<Epic> epicList = new ArrayList(List.of(kvTaskClient.load("epic")));
-            if (!epicList.isEmpty()){
-                List<Epic> epics = List.of(gson.fromJson(kvTaskClient.load("epic"), Epic.class));
-                for (Epic epic : epics) {
-                    getEpicMap().put(epic.getId(), epic);
-                }
-            }
-            ArrayList<Task> historyList = new ArrayList(List.of(kvTaskClient.load("history")));
-            if (!historyList.isEmpty()){
-                List<Task> history = List.of(gson.fromJson(kvTaskClient.load("history"), Task.class));
-                for (Task task : history) {
-                    getHistory().add(task);
-                }
-            }
+            getTaskMap().put(gson.fromJson(jsonParse("task"), Task.class).getId(),
+                    gson.fromJson(jsonParse("task"), Task.class));
+            getSubTaskMap().put(gson.fromJson(jsonParse("subtask"), SubTask.class).getId(),
+                    gson.fromJson(jsonParse("subtask"), SubTask.class));
+            getEpicMap().put(gson.fromJson(jsonParse("epic"), Epic.class).getId(),
+                    gson.fromJson(jsonParse("epic"), Epic.class));
+            getHistory().add(gson.fromJson(jsonParse("history"), Task.class));
         } catch (JsonSyntaxException e){
             e.printStackTrace();
         }

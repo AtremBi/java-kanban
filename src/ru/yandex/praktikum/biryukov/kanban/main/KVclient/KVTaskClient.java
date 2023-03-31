@@ -72,7 +72,6 @@ public class KVTaskClient {
             }
             else {
                 System.out.println("Что-то пошло не так. Сервер вернул код состояния: " + response.statusCode());
-//                throw new RuntimeException();
             }
         } catch (IOException | InterruptedException e) {
             System.out.println("Во время выполнения запроса возникла ошибка.\n" +
