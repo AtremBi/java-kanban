@@ -1,9 +1,9 @@
-package ru.yandex.praktikum.biryukov.kanban.main.dataManage.ramMemory;
+package ru.yandex.praktikum.biryukov.kanban.main.data.ramMemory;
 
 import org.junit.jupiter.api.Test;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory.InMemoryHistoryManager;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory.InMemoryTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.data.ramMemory.InMemoryHistoryManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.data.ramMemory.InMemoryTaskManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static ru.yandex.praktikum.biryukov.kanban.main.data.TaskStatus.NEW;

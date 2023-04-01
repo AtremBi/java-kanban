@@ -41,46 +41,4 @@ public class HttpTaskServer {
                 "             |    /\\   |\n" +
                 "             | /     \\ |");
     }
-
-    public static boolean isId(String query) {
-        String[] params = query.split("&");
-        String param = null;
-        for (String p : params) {
-            String[] mas = p.split("=");
-            for (int i = 0; i < mas.length; i++) {
-                if (mas[i].equals("id")) {
-                    param = mas[i + 1];
-                }
-            }
-        }
-        return param != null;
-    }
-
-    public static void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {
-        if (responseString.isBlank()) {
-            exchange.sendResponseHeaders(responseCode, 0);
-        } else {
-            byte[] bytes = responseString.getBytes(StandardCharsets.UTF_8);
-            exchange.getResponseHeaders().set("Content-type", "application/json");
-            exchange.sendResponseHeaders(responseCode, 0);
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(bytes);
-            }
-        }
-        exchange.close();
-    }
-
-    public static String getParam(String query) {
-        String[] params = query.split("&");
-        String param = null;
-        for (String p : params) {
-            String[] mas = p.split("=");
-            for (int i = 0; i < mas.length; i++) {
-                if (mas[i].equals("id")) {
-                    param = mas[i + 1];
-                }
-            }
-        }
-        return param;
-    }
 }

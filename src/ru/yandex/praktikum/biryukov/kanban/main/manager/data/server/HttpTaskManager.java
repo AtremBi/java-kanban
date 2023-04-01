@@ -1,10 +1,10 @@
-package ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.server;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.data.server;
 
 import com.google.gson.*;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.file.FileBackedTasksManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.data.file.FileBackedTasksManager;
 import ru.yandex.praktikum.biryukov.kanban.main.KVclient.KVTaskClient;
 
 import java.net.URI;

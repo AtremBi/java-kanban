@@ -1,11 +1,11 @@
-package ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.file;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.data.file;
 
 import ru.yandex.praktikum.biryukov.kanban.main.enums.ColumnNames;
 import ru.yandex.praktikum.biryukov.kanban.main.enums.TaskType;
 import ru.yandex.praktikum.biryukov.kanban.main.data.*;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.HistoryManager;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory.InMemoryTaskManager;
-import ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory.ManagerSaveException;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.data.ramMemory.InMemoryTaskManager;
+import ru.yandex.praktikum.biryukov.kanban.main.manager.data.ramMemory.ManagerSaveException;
 
 import java.io.*;
 import java.time.Duration;

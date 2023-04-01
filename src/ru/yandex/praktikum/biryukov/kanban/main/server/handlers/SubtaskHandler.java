@@ -6,15 +6,13 @@ import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
-import ru.yandex.praktikum.biryukov.kanban.main.enums.Endpoint;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
-import ru.yandex.praktikum.biryukov.kanban.main.server.HttpTaskServer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-public class SubtaskHandler implements HttpHandler {
+public class SubtaskHandler extends PatternHandler implements HttpHandler {
     private TaskManager taskManager;
     Gson gson = new GsonBuilder()
             .setPrettyPrinting()
@@ -27,37 +25,40 @@ public class SubtaskHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        Endpoint endpoint = getEndpoint(exchange.getRequestURI().getPath(), exchange.getRequestMethod(),
-                exchange.getRequestURI().getQuery());
-        switch (endpoint) {
-            case GET_SUBTASK:
-                getSubTask(exchange);
-                break;
-            case GET_SUBTASK_BY_ID:
-                getSubTaskById(exchange);
-                break;
-            case POST_SUBTASK:
-                addSubTask(exchange);
-                break;
-            case DELETE_SUBTASK:
-                deleteSubTask(exchange);
-                break;
-            case UNKNOWN:
-                HttpTaskServer.writeResponse(exchange, "Что-то пошло не так", 500);
-                break;
+        setExchange(exchange);
 
+        if (getRequestLength() == 3) {
+            if (getTaskType().equals("subtask")) {
+                    if (getQuery() == null) {
+                        if (getRequestMethod().equals("GET")) {
+                            getSubTask(exchange);
+                        }
+                        if (getRequestMethod().equals("POST")) {
+                            addSubTask(exchange);
+                        }
+                    } else if (isId(getQuery())) {
+                        if (getRequestMethod().equals("GET")) {
+                            getSubTaskById(exchange);
+                        }
+                        if (getRequestMethod().equals("DELETE")) {
+                            deleteSubTask(exchange);
+                        }
+                    }
+            }
+        } else {
+            writeResponse(exchange, "Что-то пошло не так", 500);
         }
     }
 
     private void deleteSubTask(HttpExchange exchange) throws IOException {
-        String param = HttpTaskServer.getParam(exchange.getRequestURI().getQuery());
+        String param = getParam(exchange.getRequestURI().getQuery());
         if (param != null) {
             int id = Integer.parseInt(param);
             if (taskManager.getSubTaskList().contains(taskManager.getSubTaskById(id))) {
                 taskManager.removeSubTaskById(id);
-                HttpTaskServer.writeResponse(exchange, "SubTask удален", 200);
+                writeResponse(exchange, "SubTask удален", 200);
             } else {
-                HttpTaskServer.writeResponse(exchange, "SubTask не найден", 404);
+                writeResponse(exchange, "SubTask не найден", 404);
             }
         }
     }
@@ -69,60 +70,35 @@ public class SubtaskHandler implements HttpHandler {
             if (!taskManager.getEpicList().isEmpty() && subTask.getEpicId() != 0) {
                 taskManager.saveSubTask(subTask);
                 if (taskManager.getSubTaskById(subTask.getId()) != null) {
-                    HttpTaskServer.writeResponse(exchange, gson.toJson(taskManager.getSubTaskById(subTask.getId())), 201);
+                    writeResponse(exchange, gson.toJson(taskManager.getSubTaskById(subTask.getId())), 201);
                 } else {
-                    HttpTaskServer.writeResponse(exchange, "Не пройдена валидация. " +
+                    writeResponse(exchange, "Не пройдена валидация. " +
                             "Время выполнения задачи не должно пересекаться с уже созданной", 400);
                 }
             } else {
-                HttpTaskServer.writeResponse(exchange, "Задача не была добавлена т.к не был передан epicId или " +
+                writeResponse(exchange, "Задача не была добавлена т.к не был передан epicId или " +
                         "список эпиков пуст", 400);
             }
         } catch (JsonSyntaxException e) {
             e.printStackTrace();
-            HttpTaskServer.writeResponse(exchange, "Получен некорректный JSON", 400);
+            writeResponse(exchange, "Получен некорректный JSON", 400);
         }
     }
 
     private void getSubTaskById(HttpExchange exchange) throws IOException {
-        String param = HttpTaskServer.getParam(exchange.getRequestURI().getQuery());
+        String param = getParam(exchange.getRequestURI().getQuery());
         if (param != null) {
             int id = Integer.parseInt(param);
-            if (taskManager.getSubTaskList().contains(taskManager.getSubTaskById(id))) {
-                HttpTaskServer.writeResponse(exchange, gson.toJson(taskManager.getSubTaskById(id)), 200);
+            SubTask subTask = taskManager.getSubTaskById(id);
+            if (subTask != null) {
+                writeResponse(exchange, gson.toJson(subTask), 200);
             } else {
-                HttpTaskServer.writeResponse(exchange, "сабтаска не найдена", 404);
+                writeResponse(exchange, "сабтаска не найдена", 404);
             }
         }
     }
 
     private void getSubTask(HttpExchange exchange) throws IOException {
-        HttpTaskServer.writeResponse(exchange, gson.toJson(taskManager.getSubTaskList()), 200);
-    }
-
-    public Endpoint getEndpoint(String requestPath, String requestMethod, String query) {
-        String[] pathParts = requestPath.split("/");
-
-        if (pathParts.length == 3) {
-            switch (pathParts[2]) {
-                case "subtask":
-                    if (query == null) {
-                        if (requestMethod.equals("GET")) {
-                            return Endpoint.GET_SUBTASK;
-                        }
-                        if (requestMethod.equals("POST")) {
-                            return Endpoint.POST_SUBTASK;
-                        }
-                    } else if (HttpTaskServer.isId(query)) {
-                        if (requestMethod.equals("GET")) {
-                            return Endpoint.GET_SUBTASK_BY_ID;
-                        }
-                        if (requestMethod.equals("DELETE")) {
-                            return Endpoint.DELETE_SUBTASK;
-                        }
-                    }
-            }
-        }
-        return Endpoint.UNKNOWN;
+        writeResponse(exchange, gson.toJson(taskManager.getSubTaskList()), 200);
     }
 }

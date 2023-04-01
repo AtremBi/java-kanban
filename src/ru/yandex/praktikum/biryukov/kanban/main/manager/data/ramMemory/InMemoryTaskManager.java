@@ -1,4 +1,4 @@
-package ru.yandex.praktikum.biryukov.kanban.main.manager.dataManage.ramMemory;
+package ru.yandex.praktikum.biryukov.kanban.main.manager.data.ramMemory;
 
 import ru.yandex.praktikum.biryukov.kanban.main.data.Epic;
 import ru.yandex.praktikum.biryukov.kanban.main.data.SubTask;
@@ -41,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public void saveSubTask(SubTask subTask){
         subTask.setId(newId++);
-        if (checkIntersections(subTask)){
+        if (checkIntersections(subTask) && epicMap.containsKey(subTask.getEpicId())){
             subTaskMap.put(subTask.getId(), subTask);
             epicMap.get(subTask.getEpicId()).getSubTasks().add(subTask.getId());
             syncEpic(epicMap.get(subTask.getEpicId()));
