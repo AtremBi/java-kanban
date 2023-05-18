@@ -1,15 +1,12 @@
 package ru.yandex.praktikum.biryukov.kanban.main.server;
 
-import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.Managers;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
 import ru.yandex.praktikum.biryukov.kanban.main.server.handlers.*;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;

@@ -7,7 +7,6 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import ru.yandex.praktikum.biryukov.kanban.main.data.Task;
 import ru.yandex.praktikum.biryukov.kanban.main.manager.interfaces.TaskManager;
-import ru.yandex.praktikum.biryukov.kanban.main.server.HttpTaskServer;
 
 import java.io.IOException;
 import java.io.InputStream;
